@@ -2,6 +2,7 @@ import json
 import requests
 import urllib3
 
+
 class CheckpointApi(object):
     def __init__(self, checkpoint, username, password):
         self.checkpoint = checkpoint
@@ -86,7 +87,8 @@ class CheckpointApi(object):
         status = None
         sid = self.get_session_id()
         if sid is not None:
-            data = {'name': name, 'source': sip, 'destination': dip, 'position': position, 'action': action, 'layer': layer}
+            data = {'name': name, 'source': sip, 'destination': dip,
+                    'position': position, 'action': action, 'layer': layer}
             status = self.post('https://{0}/web_api/add-access-rule'.format(self.checkpoint), data)
         return status
 
@@ -103,7 +105,8 @@ class CheckpointApi(object):
         sid = self.get_session_id()
         if sid is not None:
             data = {'name': name, 'layer': layer}
-            status = self.post('https://{0}/web_api/delete-access-rule'.format(self.checkpoint), data)
+            status = self.post('https://{0}/web_api/delete-access-rule'.format(self.checkpoint),
+                               data)
         return status
 
     def publish(self):
@@ -130,9 +133,11 @@ class CheckpointApi(object):
                     type = gateway['type']
                     if type == 'simple-gateway':
                         targets.append(gateway['name'])
-                script = 'fw sam -v -s {0} -f all {1} -J src {2}'.format(self.checkpoint, to, source)
+                script = 'fw sam -v -s {0} -f all {1} -J src {2}'.format(self.checkpoint,
+                                                                         to, source)
                 data = {'script-name': 'add-sam-rule', 'script': script, 'targets': targets}
-                status = self.post('https://{0}/web_api/run-script'.format(self.checkpoint), data)
+                status = self.post('https://{0}/web_api/run-script'
+                                   .format(self.checkpoint), data)
         return status
 
     def get_gateways(self):
@@ -140,7 +145,8 @@ class CheckpointApi(object):
         sid = self.get_session_id()
         if sid is not None:
             data = {}
-            content = self.post('https://{0}/web_api/show-gateways-and-servers'.format(self.checkpoint), data)
+            content = self.post('https://{0}/web_api/show-gateways-and-servers'
+                                .format(self.checkpoint), data)
             if content is not None and 'objects' in content:
                 response = json.loads(content)
                 gateways = response['objects']
@@ -160,7 +166,7 @@ class CheckpointApi(object):
         return content
 
     def add_threat(self, threat, group='Block IPs'):
-        status =  None
+        status = None
         publish = False
         sid = self.get_session_id()
         if sid is not None:
@@ -202,7 +208,7 @@ class CheckpointApi(object):
                 self.publish()
         else:
             status = "{\"message\": \"Could not get checkpoint session id\"}"
-         
+
         response = self.logout()
         return status
 
@@ -229,20 +235,21 @@ class CheckpointApi(object):
             if delete is not None:
                 print 'Deleted host object: {0}'.format(threat)
                 publish = True
-            else: 
+            else:
                 status = "{\"message\": \"threat: " + threat + " is not in group\"}"
             if publish:
                 self.publish()
         else:
-           status = "{\"message\": \"Could not get checkpoint session id\"}"
+            status = "{\"message\": \"Could not get checkpoint session id\"}"
 
         response = self.logout()
         return status
 
+
 urllib3.disable_warnings()
 
 if __name__ == "__main__":
-    checkpoint = '10.52.23.34
+    checkpoint = '10.52.23.34'
     username = 'admin'
     password = 'admin'
     threat = '192.168.10.32'
@@ -250,7 +257,5 @@ if __name__ == "__main__":
     response = api.add_threat(threat)
     print response
 
-    #response = api.remove_threat(threat)
-    #print response
-
-    
+    # response = api.remove_threat(threat)
+    # print response
