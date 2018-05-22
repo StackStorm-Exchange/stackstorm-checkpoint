@@ -9,10 +9,10 @@ class CheckpointBaseAction(Action):
         self._firewall_ip = self.config['firewall_ip']
         self._username = self.config['username']
         self._password = self.config['password']
-        self.device = self.device()
+        self.checkpoint = self.get_checkpoint()
 
-    def device(self):
-        device = CheckpointApi(checkpoint=self._firewall_ip, username=self._username,
-                               password=self._password)
+    def get_checkpoint(self):
+        checkpoint_api = CheckpointApi(checkpoint=self._firewall_ip, username=self._username,
+                                       password=self._password)
 
-        return device
+        return checkpoint_api

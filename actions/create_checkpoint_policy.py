@@ -5,7 +5,7 @@ from lib.action import CheckpointBaseAction
 
 class CreateAddressGroup(CheckpointBaseAction):
     def run(self, threat_ip=None):
-        status = self.device.add_threat(threat_ip)
+        status = self.checkpoint.add_threat(threat_ip)
 
         if status is not None:
             result = json.loads(status)
