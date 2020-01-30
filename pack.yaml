@@ -3,9 +3,9 @@ ref: checkpoint
 name: checkpoint
 description: CheckPoint Firewall
 keywords: 
-    - firewalls
-    - threat
-    - security
+  - firewalls
+  - threat
+  - security
 version: 0.0.2
 author: StackStorm, Inc.
 email: info@stackstorm.com
