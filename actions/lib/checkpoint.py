@@ -162,7 +162,7 @@ class CheckpointApi(object):
         if code == 200:
             content = r.content
         elif code != 404:
-            print '{0} -> {1}'.format(str(code), r.content)
+            print('{0} -> {1}'.format(str(code), r.content))
         return content
 
     def add_threat(self, threat, group='Block IPs'):
