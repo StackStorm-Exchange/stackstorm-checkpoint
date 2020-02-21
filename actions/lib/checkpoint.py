@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import json
 import requests
 import urllib3
@@ -172,12 +174,12 @@ class CheckpointApi(object):
         if sid is not None:
             address = self.get_host(threat)
             if address is None:
-                print 'Adding host object: {0}'.format(threat)
+                print('Adding host object: {0}'.format(threat))
                 self.add_host(threat)
                 publish = True
             block = self.get_group(group)
             if block is None:
-                print 'Adding address group: {0}'.format(group)
+                print('Adding address group: {0}'.format(group))
                 status = self.add_group(group, threat)
                 publish = True
             else:
@@ -189,19 +191,19 @@ class CheckpointApi(object):
                     list.append(name)
                 if threat not in list:
                     list.append(threat)
-                    print 'Updating address group: {0} with members: {1}'.format(group, list)
+                    print('Updating address group: {0} with members: {1}'.format(group, list))
                     status = self.set_group(group, list)
                     publish = True
                 else:
                     status = "{\"message\": \"threat: " + threat + " is already in group\"}"
             dip = self.get_access_rule('DENY DIP')
             if dip is None:
-                print 'Adding deny DIP rule'
+                print('Adding deny DIP rule')
                 self.add_access_rule('DENY DIP', 'Any', 'Block IPs')
                 publish = True
             sip = self.get_access_rule('DENY SIP')
             if sip is None:
-                print 'Adding deny SIP rule'
+                print('Adding deny SIP rule')
                 self.add_access_rule('DENY SIP', 'Block IPs', 'Any')
                 publish = True
             if publish:
@@ -229,11 +231,11 @@ class CheckpointApi(object):
                     else:
                         list.append(name)
                 if publish:
-                    print 'Updating address group: {0} with members: {1}'.format(group, list)
+                    print('Updating address group: {0} with members: {1}'.format(group, list))
                     status = self.set_group(group, list)
             delete = self.delete_host(threat)
             if delete is not None:
-                print 'Deleted host object: {0}'.format(threat)
+                print('Deleted host object: {0}'.format(threat))
                 publish = True
             else:
                 status = "{\"message\": \"threat: " + threat + " is not in group\"}"
@@ -255,7 +257,7 @@ if __name__ == "__main__":
     threat = '192.168.10.32'
     api = CheckpointApi(checkpoint, username, password)
     response = api.add_threat(threat)
-    print response
+    print(response)
 
     # response = api.remove_threat(threat)
-    # print response
+    # print(response)
